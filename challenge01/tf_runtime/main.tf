@@ -48,16 +48,10 @@ resource "google_project_iam_member" "webapp_roles" {
 
 resource "google_compute_firewall" "allow_db_ports" {
   name      = "allow-db-ports"
-  project  = local.project_id
+  project   = local.project_id
   network   = "default"
   priority  = 1000
   direction = "INGRESS"
-
-  # Allow TCP traffic on port 5432 for Postgres
-  allow {
-    protocol = "tcp"
-    ports    = ["5432"]
-  }
 
   # Allow TCP traffic on port 3306 for MySQL
   allow {
@@ -82,18 +76,18 @@ module "database" {
   password      = base64encode(var.password)
 }
 
-# module "application" {
-#   depends_on = [
-#     google_project_service.enable_apis
-#   ]
-#   source                = "../tf_modules/application"
-#   project_id            = local.project_id
-#   region                = local.region
-#   service_name          = "webapp_demo"
-#   container_image       = ""
-#   db_host               = module.database.public_ip_address
-#   db_user               = module.database.db_user
-#   db_password           = base64encode(module.database.db_password)
-#   db_name               = module.database.db_name
-#   service_account_email = google_service_account.webapp.email
-# }
+module "application" {
+  depends_on = [
+    google_project_service.enable_apis
+  ]
+  source                = "../tf_modules/application"
+  project_id            = local.project_id
+  region                = local.region
+  service_name          = "webapp_demo"
+  container_image       = "aks2103/webapp:latest"
+  db_host               = module.database.public_ip_address
+  db_user               = module.database.db_user
+  db_password           = base64encode(module.database.db_password)
+  db_name               = module.database.db_name
+  service_account_email = google_service_account.webapp.email
+}

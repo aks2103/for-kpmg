@@ -10,8 +10,8 @@ COPY . /app
 # Install required dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Expose port 80
-EXPOSE 80
+# Expose port 9090
+EXPOSE 9090
 
 # Set environment variables
 ENV MYSQL_USER=webapp-db-user
