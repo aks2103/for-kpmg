@@ -8,35 +8,26 @@ resource "google_cloud_run_service" "webapp" {
     spec {
       containers {
         image = var.container_image
-        env = [
-          {
-            name  = "DB_HOST"
-            value = var.db_host
-          },
-          {
-            name  = "DB_USER"
-            value = var.db_user
-          },
-          {
-            name  = "DB_PASSWORD"
-            value = var.db_password
-          },
-          {
-            name  = "DB_NAME"
-            value = var.db_name
-          },
-        ]
       }
 
-      # Configure the service to require authentication
       container_concurrency = 80
-      service_account_email = var.service_account_email
-      container_port        = 8080
+      service_account_name = var.service_account_email
     }
   }
+}
 
-  # Allow unauthenticated access to the service
-  metadata {
-    disable_auth = true
+data "google_iam_policy" "noauth" {
+  binding {
+    role = "roles/run.invoker"
+    members = [
+      "allUsers",
+    ]
   }
+}
+
+resource "google_cloud_run_service_iam_policy" "noauth" {
+  location    = google_cloud_run_service.webapp.location
+  project     = google_cloud_run_service.webapp.project
+  service     = google_cloud_run_service.webapp.name
+  policy_data = data.google_iam_policy.noauth.policy_data
 }

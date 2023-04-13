@@ -83,7 +83,7 @@ module "application" {
   source                = "../tf_modules/application"
   project_id            = local.project_id
   region                = local.region
-  service_name          = "webapp_demo"
+  service_name          = "webapp-demo"
   container_image       = "aks2103/webapp:latest"
   db_host               = module.database.public_ip_address
   db_user               = module.database.db_user
