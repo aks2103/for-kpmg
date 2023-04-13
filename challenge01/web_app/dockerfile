@@ -1,0 +1,23 @@
+# Base image
+FROM python:3.9-slim-buster
+
+# Set the working directory to /app
+WORKDIR /app
+
+# Copy the current directory contents into the container at /app
+COPY . /app
+
+# Install required dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Expose port 80
+EXPOSE 80
+
+# Set environment variables
+ENV MYSQL_USER=webapp-db-user
+ENV MYSQL_PASSWORD=webapp-db-pass
+ENV MYSQL_HOST=35.200.129.143
+ENV MYSQL_DATABASE=webapp-db
+
+# Start the web app
+CMD ["python", "app.py"]
