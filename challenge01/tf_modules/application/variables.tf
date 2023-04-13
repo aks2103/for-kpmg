@@ -18,15 +18,3 @@ variable "container_image" {
 variable "service_account_email" {
   description = "Email of the service account for the Cloud Run service"
 }
-variable "db_host" {
-  description = "DB hostname"
-}
-variable "db_user" {
-  description = "DB username"
-}
-variable "db_password" {
-  description = "DB password"
-}
-variable "db_name" {
-  description = "DB name"
-}

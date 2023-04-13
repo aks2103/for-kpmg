@@ -85,9 +85,5 @@ module "application" {
   region                = local.region
   service_name          = "webapp-demo"
   container_image       = "aks2103/flask-app:latest"
-  db_host               = module.database.public_ip_address
-  db_user               = module.database.db_user
-  db_password           = base64encode(module.database.db_password)
-  db_name               = module.database.db_name
   service_account_email = google_service_account.webapp.email
 }
