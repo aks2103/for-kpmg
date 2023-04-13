@@ -84,7 +84,7 @@ module "application" {
   project_id            = local.project_id
   region                = local.region
   service_name          = "webapp-demo"
-  container_image       = "aks2103/webapp:latest"
+  container_image       = "aks2103/flask-app:latest"
   db_host               = module.database.public_ip_address
   db_user               = module.database.db_user
   db_password           = base64encode(module.database.db_password)
